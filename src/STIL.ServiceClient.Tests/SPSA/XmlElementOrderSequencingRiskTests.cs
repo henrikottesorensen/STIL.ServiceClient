@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
@@ -52,7 +53,8 @@ public class XmlElementOrderSequencingRiskTests
         XmlSerializer serializer = new XmlSerializer(typeof(T), Namespace);
         using StringReader stringReader = new StringReader(xml);
         using XmlReader reader = XmlReader.Create(stringReader);
-        return serializer.Deserialize(reader) as T;
+        return serializer.Deserialize(reader) as T
+            ?? throw new InvalidOperationException($"Failed to deserialize {typeof(T).Name}.");
     }
 
     [Fact]

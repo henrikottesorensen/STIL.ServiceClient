@@ -16,21 +16,21 @@ public class DeserialiseTests
     {
         string path = "Samples/HentBrugersInstitutionstilknytningerResponse_ValidResponse.xml";
         XDocument document = XDocument.Load(File.OpenRead(path));
-        XElement body = document.Root?.Descendants().FirstOrDefault(d => d.Name.LocalName == nameof(hentBrugersInstitutionstilknytningerResponse));
-        
+        XElement? body = document.Root?.Descendants().FirstOrDefault(d => d.Name.LocalName == nameof(hentBrugersInstitutionstilknytningerResponse));
+
         Assert.NotNull(body);
 
         string nameSpace = body.Name.NamespaceName;
         XmlSerializer serializer = new XmlSerializer(
             typeof(hentBrugersInstitutionstilknytningerResponse), nameSpace);
 
-        hentBrugersInstitutionstilknytningerResponse response;
+        hentBrugersInstitutionstilknytningerResponse? response;
         using (XmlReader reader = body.CreateReader())
         {
             reader.MoveToContent();
             response = serializer.Deserialize(reader) as hentBrugersInstitutionstilknytningerResponse;
         }
-        
+
         Assert.NotNull(response?.institutionstilknytning);
     }
 

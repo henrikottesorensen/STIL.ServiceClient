@@ -22,7 +22,8 @@ public class OrdreDetailsSchemaEvolutionTests
         XmlSerializer serializer = new XmlSerializer(typeof(OrdreDetails), Namespace);
         using StringReader stringReader = new StringReader(xml);
         using XmlReader reader = XmlReader.Create(stringReader);
-        return serializer.Deserialize(reader) as OrdreDetails;
+        return serializer.Deserialize(reader) as OrdreDetails
+            ?? throw new InvalidOperationException("Failed to deserialize OrdreDetails.");
     }
 
     [Fact]

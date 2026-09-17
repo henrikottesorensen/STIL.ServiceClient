@@ -96,7 +96,7 @@ namespace STIL.ServiceClient.Tests.Extensions
             if (handler == null)
                 throw new ArgumentNullException(nameof(handler));
 
-            handler.Protected().As<IHttpMessageHandler>().Verify(expression, times, failMessage);
+            handler.Protected().As<IHttpMessageHandler>().Verify(expression, times, failMessage!);
         }
 
         /// <summary>

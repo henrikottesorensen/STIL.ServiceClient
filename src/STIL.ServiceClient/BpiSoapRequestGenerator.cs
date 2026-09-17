@@ -78,6 +78,6 @@ public class BpiSoapRequestGenerator
                                              X509Certificate2 signingCertificate,
                                              Guid? messageId = null)
     {
-        return GetSignedRequest(requestObject, requestObject.GetType().Name, signingCertificate, messageId);
+        return GetSignedRequest(requestObject, typeof(TRequest).Name, signingCertificate, messageId);
     }
 }

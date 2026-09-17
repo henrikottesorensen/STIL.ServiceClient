@@ -96,7 +96,7 @@ public class SoapRequestBuilder<T>
 
     private readonly XDocument _document;
 
-    private XElement Envelope => _document.Root;
+    private XElement Envelope => _document.Root!;
 
     private XElement Header => _document.Descendants(SoapEnvelopeNamespace + "Header").Single();
 
@@ -177,7 +177,7 @@ public class SoapRequestBuilder<T>
 
         XElement bodyObject = requestObject.Serialize();
 
-        if (Attribute.GetCustomAttribute(requestObject.GetType(), typeof(XmlTypeAttribute)) is XmlTypeAttribute xmlTypeAttribute &&
+        if (Attribute.GetCustomAttribute(typeof(T), typeof(XmlTypeAttribute)) is XmlTypeAttribute xmlTypeAttribute &&
             !string.IsNullOrWhiteSpace(xmlTypeAttribute.Namespace))
         {
             XNamespace bodyNamespace = XNamespace.Get(xmlTypeAttribute.Namespace);
@@ -203,7 +203,7 @@ public class SoapRequestBuilder<T>
             AddSecurityElement();
         }
 
-        Security.Add(new XElement(
+        Security!.Add(new XElement(
             WSSecuritySecExtNamespace + "BinarySecurityToken",
             new XAttribute(WSSecurityUtilityNamespace + "Id", $"SecurityToken-{RequestId}"),
             new XAttribute("ValueType", ValueType),
@@ -237,7 +237,7 @@ public class SoapRequestBuilder<T>
         string created = dt.ToSoapString();
         string expires = dt.AddMinutes(5).ToSoapString();
 
-        Security.Add(new XElement(
+        Security!.Add(new XElement(
             WSSecurityUtilityNamespace + "Timestamp",
             new XAttribute(WSSecurityUtilityNamespace + "Id", $"Timestamp-{RequestId}"),
             new XElement(WSSecurityUtilityNamespace + "Created", created),

@@ -169,7 +169,7 @@ namespace STIL.ServiceClient
         {
             if (response.Content is null)
             {
-                return new FaultException(new FaultReason(response.ReasonPhrase), new FaultCode("no content found on error"), response.RequestMessage.RequestUri.AbsoluteUri);
+                return new FaultException(new FaultReason(response.ReasonPhrase), new FaultCode("no content found on error"), response.RequestMessage?.RequestUri?.AbsoluteUri);
             }
 
             string responseText = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -181,7 +181,7 @@ namespace STIL.ServiceClient
 
             if (details.serviceFaultDetailer != null)
             {
-                return new FaultException<TServiceFaultDetailer>(details.serviceFaultDetailer, msgFault.Reason, msgFault.Code, response.RequestMessage?.RequestUri.AbsoluteUri);
+                return new FaultException<TServiceFaultDetailer>(details.serviceFaultDetailer, msgFault.Reason, msgFault.Code, response.RequestMessage?.RequestUri?.AbsoluteUri);
             }
 
             if (details.errorMessage != null)
@@ -189,7 +189,7 @@ namespace STIL.ServiceClient
                 return new FaultException(details.errorMessage);
             }
 
-            return new FaultException(msgFault, response.RequestMessage?.RequestUri.AbsoluteUri);
+            return new FaultException(msgFault, response.RequestMessage?.RequestUri?.AbsoluteUri);
         }
 
         private static (TServiceFaultDetailer? serviceFaultDetailer, string? errorMessage) GetErrorDetails<TServiceFaultDetailer>(string responseText)

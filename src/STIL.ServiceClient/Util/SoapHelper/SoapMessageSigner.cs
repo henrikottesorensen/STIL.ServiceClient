@@ -117,15 +117,15 @@ public class SoapMessageSigner
     /// <returns>The <see cref="SignedXml"/> object.</returns>
     private static SignedXml GetXmlSigner(X509Certificate2 signingCertificate, XmlDocument xmlDocument, string signingMethod)
     {
-        return new SignedXmlWithNamespacedIdElement(xmlDocument)
+        SignedXmlWithNamespacedIdElement signedXml = new(xmlDocument)
         {
             SigningKey = signingCertificate.GetRSAPrivateKey(),
-            SignedInfo =
-            {
-                CanonicalizationMethod = SignedXml.XmlDsigExcC14NTransformUrl,
-                SignatureMethod = signingMethod,
-            },
         };
+
+        signedXml.SignedInfo!.CanonicalizationMethod = SignedXml.XmlDsigExcC14NTransformUrl;
+        signedXml.SignedInfo!.SignatureMethod = signingMethod;
+
+        return signedXml;
     }
 
     /// <summary>

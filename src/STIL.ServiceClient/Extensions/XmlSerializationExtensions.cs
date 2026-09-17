@@ -37,7 +37,7 @@ namespace STIL.SoapHelper
         {
             XmlDocument xmldoc = new XmlDocument();
             xmldoc.Load(element.CreateReader());
-            return xmldoc.DocumentElement;
+            return xmldoc.DocumentElement!;
         }
     }
 }

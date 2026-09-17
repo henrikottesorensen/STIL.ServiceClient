@@ -22,14 +22,19 @@ namespace STIL.ServiceClient.Util.SoapHelper
         /// </summary>
         /// <param name="document">The document containing the element with the specified id value.</param>
         /// <param name="id">The value of the 'Id' attribute.</param>
-        /// <returns>An instance <see cref="XmlElement"/>.</returns>
-        public override XmlElement GetIdElement(XmlDocument document, string id)
+        /// <returns>An instance <see cref="XmlElement"/>, or <see langword="null"/> if no matching element is found.</returns>
+        public override XmlElement? GetIdElement(XmlDocument? document, string id)
         {
             // check to see if it's a standard ID reference
-            XmlElement idElem = base.GetIdElement(document, id);
+            XmlElement? idElem = base.GetIdElement(document, id);
             if (idElem != null)
             {
                 return idElem;
+            }
+
+            if (document is null)
+            {
+                return null;
             }
 
             // Else look for elements with an 'id' attribute with the given input (id) value
@@ -43,12 +48,12 @@ namespace STIL.ServiceClient.Util.SoapHelper
             // has gone wrong.
             if (idElems.Count != 1)
             {
-                return null!;
+                return null;
             }
 
             XmlDocument doc = new XmlDocument();
             doc.Load(idElems[0].CreateReader());
-            return doc.DocumentElement!;
+            return doc.DocumentElement;
         }
     }
 }
